@@ -222,10 +222,15 @@ a.worksheet:hover{ border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan) in
 .subj > p{ color:var(--muted); font-size:.9rem; margin:0 0 6px; line-height:1.5; }
 .topic{ margin-top:14px; }
 .topic .cap{ display:block; margin-bottom:8px; text-transform:none; letter-spacing:.06em; font-size:.74rem; }
-.links{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:8px; }
-.links a{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:.88rem; line-height:1.3; min-width:0; transition:border-color .15s, box-shadow .15s; }
-.links a:hover, .links a:focus-visible{ border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan) inset; outline:none; }
-.links a .n{ flex:0 0 26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:.72rem; color:var(--cyan); border:1px solid var(--line); background:var(--panel); }
+.links{ display:grid; grid-template-columns:repeat(auto-fill, minmax(196px, 1fr)); gap:12px; }
+.links a{ display:flex; flex-direction:column; text-decoration:none; color:var(--ink); background:var(--panel-2); border:1px solid var(--line); border-radius:11px; overflow:hidden; min-width:0; transition:border-color .15s, box-shadow .15s, transform .06s; }
+.links a:hover, .links a:focus-visible{ border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan) inset, 0 10px 26px -20px var(--cyan); outline:none; }
+.links a:active{ transform:translateY(1px); }
+.links img{ display:block; width:100%; height:auto; aspect-ratio:16 / 10; object-fit:cover; background:#070a13; border-bottom:1px solid var(--line); transition:transform .25s; }
+.links a:hover img{ transform:scale(1.03); }
+.links .ttl{ display:flex; align-items:flex-start; gap:9px; padding:10px 11px 11px; font-size:.86rem; line-height:1.3; font-weight:600; }
+.links a .n{ flex:0 0 24px; height:24px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:.7rem; color:var(--cyan); border:1px solid var(--line); background:var(--panel); font-weight:500; }
+@media (max-width:560px){ .links{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:9px; } .links .ttl{ font-size:.8rem; padding:8px 9px 9px; } .links a .n{ display:none; } }
 .soon{ border-style:dashed; background:transparent; }
 .soon h2{ color:var(--muted); }
 .search{ margin:0 0 18px; }
@@ -233,7 +238,7 @@ a.worksheet:hover{ border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan) in
 .search input:focus{ border-color:var(--cyan); }
 .empty{ color:var(--muted); font-size:.9rem; padding:8px 2px; }
 .foot{ margin-top:26px; color:var(--muted); font-size:.82rem; line-height:1.6; border-top:1px solid var(--line); padding-top:16px; }
-@media (max-width:560px){ .subj{ padding:14px; } .subj-head .open{ margin-left:0; width:100%; text-align:center; } .links{ grid-template-columns:minmax(0,1fr); } }
+@media (max-width:560px){ .subj{ padding:14px; } .subj-head .open{ margin-left:0; width:100%; text-align:center; } }
 </style>
 </head>
 <body>
@@ -250,6 +255,8 @@ a.worksheet:hover{ border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan) in
    SUBJECTS — edit this list to add a subject or a simulation.
    Each subject lives in its own GitHub repository, so its address is
    the repository name, e.g. the "physics" repository -> "physics/".
+   Each simulation is [title, address, thumbnail picture (optional)].
+   Thumbnails are 640×400 images, e.g. "physics/thumbs/projectiles.webp".
    Set "soon: true" to show a subject as coming soon.
    ===================================================================== */
 const SUBJECTS = [
@@ -257,24 +264,24 @@ const SUBJECTS = [
     blurb:"Collision theory, then Module 5: static and dynamic equilibrium, Le Chatelier's principle, equilibrium constants and solubility.",
     topics:[
       { title:"Reaction rates", items:[
-        ["Collision Theory Simulation", "chemistry/collision-theory/"] ] },
+        ["Collision Theory Simulation", "chemistry/collision-theory/", "chemistry/thumbs/collision-theory.webp"] ] },
       { title:"Module 5 · Static and dynamic equilibrium", items:[
-        ["Reversible or Not?", "chemistry/reversible-or-not/"],
-        ["Dynamic Equilibrium Box", "chemistry/dynamic-equilibrium/"],
-        ["Why Some Reactions Never Come Back", "chemistry/entropy-enthalpy/"] ] },
+        ["Reversible or Not?", "chemistry/reversible-or-not/", "chemistry/thumbs/reversible-or-not.webp"],
+        ["Dynamic Equilibrium Box", "chemistry/dynamic-equilibrium/", "chemistry/thumbs/dynamic-equilibrium.webp"],
+        ["Why Some Reactions Never Come Back", "chemistry/entropy-enthalpy/", "chemistry/thumbs/entropy-enthalpy.webp"] ] },
       { title:"Module 5 · Factors that affect equilibrium", items:[
-        ["Le Chatelier Lab", "chemistry/le-chatelier/"],
-        ["Graph Detective", "chemistry/graph-detective/"],
-        ["Energy Profiles and Rates", "chemistry/energy-profiles/"] ] },
+        ["Le Chatelier Lab", "chemistry/le-chatelier/", "chemistry/thumbs/le-chatelier.webp"],
+        ["Graph Detective", "chemistry/graph-detective/", "chemistry/thumbs/graph-detective.webp"],
+        ["Energy Profiles and Rates", "chemistry/energy-profiles/", "chemistry/thumbs/energy-profiles.webp"] ] },
       { title:"Module 5 · Calculating the equilibrium constant", items:[
-        ["Keq Builder and Q vs K", "chemistry/keq-builder/"],
-        ["ICE Table Trainer", "chemistry/ice-trainer/"],
-        ["Virtual Colorimeter Prac", "chemistry/colorimeter/"] ] },
+        ["Keq Builder and Q vs K", "chemistry/keq-builder/", "chemistry/thumbs/keq-builder.webp"],
+        ["ICE Table Trainer", "chemistry/ice-trainer/", "chemistry/thumbs/ice-trainer.webp"],
+        ["Virtual Colorimeter Prac", "chemistry/colorimeter/", "chemistry/thumbs/colorimeter.webp"] ] },
       { title:"Module 5 · Solution equilibria", items:[
-        ["Dissolving Up Close", "chemistry/dissolving/"],
-        ["Precipitation Spot Plate", "chemistry/precipitation/"],
-        ["Will It Precipitate? (Ksp)", "chemistry/ksp/"],
-        ["Cycad Detoxification", "chemistry/cycad/"] ] }
+        ["Dissolving Up Close", "chemistry/dissolving/", "chemistry/thumbs/dissolving.webp"],
+        ["Precipitation Spot Plate", "chemistry/precipitation/", "chemistry/thumbs/precipitation.webp"],
+        ["Will It Precipitate? (Ksp)", "chemistry/ksp/", "chemistry/thumbs/ksp.webp"],
+        ["Cycad Detoxification", "chemistry/cycad/", "chemistry/thumbs/cycad.webp"] ] }
     ] }
   // , { name:"Physics", icon:"Ph", href:"physics/", soon:true, blurb:"Coming soon.", topics:[] }
 ];
@@ -300,7 +307,12 @@ function render(filter){
       const d = document.createElement("div"); d.className = "topic";
       const c = document.createElement("span"); c.className = "cap"; c.textContent = t.title; d.appendChild(c);
       const g = document.createElement("div"); g.className = "links";
-      t.items.forEach(it => { n++; const a = document.createElement("a"); a.href = it[1]; a.innerHTML = '<span class="n"></span><span></span>'; a.children[0].textContent = n; a.children[1].textContent = it[0]; g.appendChild(a); });
+      t.items.forEach(it => {
+        n++; const a = document.createElement("a"); a.href = it[1];
+        if(it[2]){ const im = document.createElement("img"); im.src = it[2]; im.alt = ""; im.width = 640; im.height = 400; im.loading = "lazy"; im.decoding = "async"; a.appendChild(im); }
+        const tt = document.createElement("span"), nn = document.createElement("span"), tx = document.createElement("span");
+        tt.className = "ttl"; nn.className = "n"; nn.textContent = n; tx.textContent = it[0]; tt.appendChild(nn); tt.appendChild(tx); a.appendChild(tt); g.appendChild(a);
+      });
       d.appendChild(g); sec.appendChild(d);
     });
     host.appendChild(sec);
